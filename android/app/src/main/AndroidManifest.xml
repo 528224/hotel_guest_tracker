@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hotel_guest_tracker">
    <application
-        android:label="hotel_guest_tracker"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Bhoomika"
+        android:icon="@mipmap/launcher_bhoomika">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

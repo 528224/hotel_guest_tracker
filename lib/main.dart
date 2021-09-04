@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     page.graphics.drawString('Welcome to PDF Succinctly!',
         PdfStandardFont(PdfFontFamily.helvetica, 30));
 
-    var imageData = await _readImageData('Pdf_Succinctly.png');
+    var imageData = await _readImageData('bhoomika_card.jpeg');
     page.graphics
         .drawImage(PdfBitmap(imageData), Rect.fromLTWH(0, 100, 440, 550));
 

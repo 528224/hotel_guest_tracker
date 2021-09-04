@@ -18,21 +18,22 @@ Widget getCommonProgressWidget() {
   return Center(child: CircularProgressIndicator());
 }
 
-Widget getCommonAddAndPreviewImageWidget(Rx<XFile> imageFileRx) {
+Widget getCommonAddAndPreviewImageWidget(
+    {required Rx<XFile> imageFileRx, String? name}) {
   var imagePath = imageFileRx.value.path;
   if (imagePath.isEmpty) {
-    return _getImageSelectButton(imageFileRx);
+    return _getImageSelectButton(imageFileRx, name);
   } else {
     return _getImagePreviewSection(imageFileRx);
   }
 }
 
-_getImageSelectButton(Rx<XFile> imageFileRx) {
+_getImageSelectButton(Rx<XFile> imageFileRx, String? name) {
   return TextButton(
       onPressed: () {
         _selectImage(imageFileRx);
       },
-      child: Text('Tap to add image'));
+      child: Text(name ?? 'Tap to add image'));
 }
 
 _getImagePreviewSection(Rx<XFile> imageFileRx) {

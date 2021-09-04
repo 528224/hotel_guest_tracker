@@ -12,8 +12,8 @@ import 'mobile.dart';
 
 class CreatePDFController extends GetxController {
   final requestFormKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final addressController = TextEditingController();
+  final allottedRoomController = TextEditingController();
+  final nameAndAddressController = TextEditingController();
 
   var isLoading = false;
 
@@ -29,8 +29,8 @@ class CreatePDFController extends GetxController {
 
   @override
   void onClose() {
-    nameController.dispose();
-    addressController.dispose();
+    allottedRoomController.dispose();
+    nameAndAddressController.dispose();
     image1.close();
     image2.close();
     super.onClose();
@@ -62,33 +62,58 @@ class CreatePDFController extends GetxController {
             PdfDocument document = PdfDocument();
             final page = document.pages.add();
 
-            page.graphics.drawString(
-                'Name: ${nameController.value.text} \nAddress: ${addressController.value.text}',
-                PdfStandardFont(PdfFontFamily.helvetica, 30));
+            var width = page.size.width;
+            var height = page.size.height;
 
+            var image0Data = await _readImageData('bhoomika_card.jpeg');
+            page.graphics.drawImage(
+                PdfBitmap(image0Data), Rect.fromLTWH(110, 0, 300, 160));
+
+            var dateTime = DateTime.now();
+
+            page.graphics.drawString('Date&Time: ${dateTime.toString()}',
+                PdfStandardFont(PdfFontFamily.helvetica, 12),
+                bounds: Rect.fromLTWH(width - 250, 180, 250, 30));
+
+            page.graphics.drawString(
+                'Allotted Room: ${allottedRoomController.value.text} \nName & Address: ${nameAndAddressController.value.text}',
+                PdfStandardFont(PdfFontFamily.helvetica, 12),
+                bounds: Rect.fromLTWH(0, 225, width, 150));
+
+            page.graphics.drawString(
+                'ID Proof Front:', PdfStandardFont(PdfFontFamily.helvetica, 12),
+                bounds: Rect.fromLTWH(0, 325, 200, 25));
             var image1Data = await image1.value.readAsBytes();
             page.graphics.drawImage(
-                PdfBitmap(image1Data), Rect.fromLTWH(0, 150, 250, 250));
+                PdfBitmap(image1Data), Rect.fromLTWH(0, 350, 250, 250));
 
-            // var image2Data = await _readImageData(image2.value.path);
+            page.graphics.drawString(
+                'ID Proof Back:', PdfStandardFont(PdfFontFamily.helvetica, 12),
+                bounds: Rect.fromLTWH(300, 325, 200, 25));
             var image2Data = await image2.value.readAsBytes();
             page.graphics.drawImage(
-                PdfBitmap(image2Data), Rect.fromLTWH(0, 410, 300, 300));
+                PdfBitmap(image2Data), Rect.fromLTWH(300, 350, 250, 250));
+
+            page.graphics.drawString(
+                'Sign: ___', PdfStandardFont(PdfFontFamily.helvetica, 12),
+                bounds: Rect.fromLTWH(16, height - 150, 350, 50));
+
+            page.graphics.drawString(
+                'Date: ___', PdfStandardFont(PdfFontFamily.helvetica, 12),
+                bounds: Rect.fromLTWH(width - 200, height - 150, 200, 50));
 
             List<int> bytes = document.save();
             document.dispose();
 
-            saveAndLaunchFile(bytes, '${nameController.value.text}.pdf');
+            saveAndLaunchFile(bytes, '${dateTime.toString()}.pdf');
           }
         },
         loadingWidget: getCommonProgressWidget(),
         opacity: 0.7);
   }
 
-  _createPDF() {}
-
-  Future<Uint8List> _readImageData(String path) async {
-    final data = await rootBundle.load(path);
+  Future<Uint8List> _readImageData(String name) async {
+    final data = await rootBundle.load('images/$name');
     return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 }

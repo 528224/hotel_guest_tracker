@@ -22,16 +22,17 @@ class CreatePDFWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextFormField(
-                  controller: controller.nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
+                  controller: controller.allottedRoomController,
+                  decoration: const InputDecoration(labelText: 'Allotted Room'),
                   validator: controller.validator,
                   minLines: 1,
                   maxLines: 2,
                   maxLength: 100,
                 ),
                 TextFormField(
-                  controller: controller.addressController,
-                  decoration: const InputDecoration(labelText: 'Address'),
+                  controller: controller.nameAndAddressController,
+                  decoration:
+                      const InputDecoration(labelText: 'Name & Address'),
                   validator: controller.validator,
                   minLines: 1,
                   maxLines: 10,
@@ -54,13 +55,15 @@ class CreatePDFWidget extends StatelessWidget {
 
   _getAddAndPreviewImage1Widget() {
     return Obx(() {
-      return getCommonAddAndPreviewImageWidget(controller.image1);
+      return getCommonAddAndPreviewImageWidget(
+          imageFileRx: controller.image1, name: "ID Card Front");
     });
   }
 
   _getAddAndPreviewImage2Widget() {
     return Obx(() {
-      return getCommonAddAndPreviewImageWidget(controller.image2);
+      return getCommonAddAndPreviewImageWidget(
+          imageFileRx: controller.image2, name: "ID Card Back");
     });
   }
 }
